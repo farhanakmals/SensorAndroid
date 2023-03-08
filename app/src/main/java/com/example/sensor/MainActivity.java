@@ -1,13 +1,16 @@
 package com.example.sensor;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.security.PrivilegedAction;
@@ -20,6 +23,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Sensor mSensorProximity, mSensorLight;
 
     private TextView mTextSensorLight, mTextSensorProximity;
+
+    private ScrollView mScrollViewBG;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,11 +91,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         switch (sensorType) {
             case Sensor.TYPE_LIGHT:
                 mTextSensorLight.setText(String.format("Light sensor : %1$.2f", currentValue));
+                changeBackgroundolor(currentValue);
                 break;
             case Sensor.TYPE_PROXIMITY:
                 mTextSensorProximity.setText(String.format("Proximity sensor : %1$.2f", currentValue));
                 break;
             default:
+        }
+    }
+
+    private void changeBackgroundolor(float currentValue) {
+        ConstraintLayout layout = findViewById(R.id.layout_constraint);
+        if (currentValue > 20000 && currentValue < 30000) {
+            layout.setBackgroundColor(Color.RED);
+        } else if (currentValue > 0 && currentValue <20000) {
+            layout.setBackgroundColor(Color.BLUE);
+        } else if (currentValue > 20000 && currentValue < 40000) {
+            layout.setBackgroundResource(R.drawable.img);
         }
     }
 
